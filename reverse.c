@@ -106,8 +106,7 @@ void delete_lines(struct lines * line)
 
 int main(int argc, char **argv)
 {
-	FILE *input = NULL;
-	FILE *output = NULL;
+	
 	struct lines * line = NULL;
 
 	if (argc == 1) {
@@ -119,6 +118,7 @@ int main(int argc, char **argv)
 		delete_lines(line);
 	}
 	if (argc == 2) {
+		FILE *input = NULL;
 		//checks for null input
 		if((input = fopen(argv[1], "r")) == NULL) {
 			fprintf(stderr,"Error: cannot open input file '%s'\n", argv[1]);
@@ -128,9 +128,12 @@ int main(int argc, char **argv)
 		read_lines(&line, input);
 		print_lines(line, input);
 		delete_lines(line);
+		fclose(input);
 	}	
 
 	if (argc == 3) {
+		FILE *input = NULL;
+		FILE *output = NULL;
 		//comparing first and second arguments
 		if ( ! strcmp(argv[1], argv[2])) {
 		fprintf(stderr, "Input and output file must differ.\n");
@@ -151,6 +154,8 @@ int main(int argc, char **argv)
 		write_to_file(line, output);
 		delete_lines(line);
 		
+		fclose(output);
+		
 		
 	}
 	//If given too many arguments, give instructions for usage
@@ -158,8 +163,7 @@ int main(int argc, char **argv)
 		fprintf(stderr,"Usage: reverse <input> <output>\n");
 		exit(1);
 	}
-	fclose(input);
-	fclose(output);
+	
 	
 	
 	return 0;
